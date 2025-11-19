@@ -10,3 +10,10 @@ export interface Client {
   // putForm: <D = any, R = any, C = any>(url: string, data: D, conf?: C) => Promise<R>
   // patchForm: <D = any, R = any, C = any>(url: string, data: D, conf?: C) => Promise<R>
 }
+
+export interface Response<T = any> {
+  code: number
+  reason?: string
+  message: string
+  data: T
+}
