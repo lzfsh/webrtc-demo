@@ -1,26 +1,33 @@
 {
-  "name": "api",
+  "name": "@demo/backend",
   "version": "1.0.0",
   "description": "",
-  "type": "module",
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.20.0",
   "scripts": {
-    "dev": "tsup --watch",
+    "dev": "nodemon",
     "build": "tsup",
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@demo/api": "workspace:*",
+    "@koa/bodyparser": "catalog:server",
     "@koa/router": "catalog:server",
-    "koa": "catalog:server"
+    "cac": "catalog:cli",
+    "koa": "catalog:server",
+    "mysql2": "catalog:",
+    "statuses": "catalog:server",
+    "zod": "catalog:"
   },
   "devDependencies": {
+    "@types/fs-extra": "catalog:",
     "@types/koa": "catalog:server",
     "@types/koa__router": "catalog:server",
     "@types/node": "catalog:linter",
+    "@types/statuses": "catalog:server",
     "nodemon": "catalog:tools",
     "tsup": "catalog:bunlder",
     "typescript": "catalog:linter"

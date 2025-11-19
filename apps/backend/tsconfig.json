@@ -4,5 +4,5 @@
     "lib": ["ES2023"],
     "types": ["node"]
   },
-  "include": ["tsup.config.ts", "src"]
+  "include": ["tsup.config.ts", "src", "types"]
 }

@@ -1,0 +1,7 @@
+{
+  "ignore": ["**/conf/**", "**/dist/**", "**/types/**", "tsup.config.ts"],
+  "watch": ["src", "package.json"],
+  "delay": 300,
+  "ext": "ts,tsx,json",
+  "exec": "npx tsx src/index.ts"
+}

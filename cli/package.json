@@ -1,7 +1,7 @@
 {
   "name": "@demo/cli",
   "version": "1.0.0",
-  "description": "A command-line tool collection for webrtc-demo.",
+  "description": "A script collection for webrtc-demo.",
   "license": "MIT",
   "packageManager": "pnpm@10.19.0",
   "type": "module",

@@ -4,9 +4,11 @@ packages:
   - cli
 
 catalog:
-  '@types/fs-extra': ^11.0.4
+  '@types/fs-extra': 11.0.4
   axios: 1.13.2
-  fs-extra: ^11.3.2
+  fs-extra: 11.3.2
+  mysql2: 3.15.3
+  zod: ^4.1.12
 
 catalogs:
   bundler:
@@ -16,6 +18,7 @@ catalogs:
   bunlder:
     tsup: ^8.5.1
   cli:
+    cac: 6.7.14
     commander: ^14.0.2
     picocolors: ^1.1.1
   linter:
@@ -38,11 +41,13 @@ catalogs:
     react: ^19.2.0
     react-dom: ^19.2.0
   server:
+    '@koa/bodyparser': ^6.0.0
     '@koa/router': ^14.0.0
     '@types/koa': ^3.0.1
     '@types/koa__router': ^12.0.5
+    '@types/statuses': ^2.0.6
     koa: ^3.1.1
-    koa-router: ^14.0.0
+    statuses: ^2.0.2
   tools:
     nodemon: ^3.1.11
     tsx: ^4.20.6
