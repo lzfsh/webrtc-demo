@@ -1,18 +1,24 @@
 {
   "name": "@demo/api",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "API client for frontend, and type for backend.",
+  "keywords": [],
+  "author": "lzfsh",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.20.0",
   "devDependencies": {
     "tsup": "catalog:bunlder",
     "tsx": "catalog:tools",
