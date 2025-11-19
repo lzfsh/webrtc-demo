@@ -2,8 +2,7 @@ import { existsSync, readFileSync } from 'node:fs'
 
 export interface Conf {
   server: {
-    host: string
-    port: number
+    port?: number
   }
   datasource: {
     host: string

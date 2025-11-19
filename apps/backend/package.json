@@ -1,15 +1,23 @@
 {
   "name": "@demo/backend",
   "version": "1.0.0",
-  "description": "",
+  "description": "Backend server for demo.",
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "lzfsh",
+  "license": "MIT",
   "packageManager": "pnpm@10.20.0",
+  "main": "dist/index.js",
+  "bin": {
+    "server": "bin/index.js"
+  },
+  "files": [
+    "dist",
+    "bin"
+  ],
   "scripts": {
     "dev": "nodemon",
     "build": "tsup",
-    "start": "tsx src/index.ts",
+    "start": "tsx src/index.ts start -c config.json",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

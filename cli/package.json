@@ -2,9 +2,11 @@
   "name": "@demo/cli",
   "version": "1.0.0",
   "description": "A script collection for webrtc-demo.",
+  "keywords": [],
+  "author": "lzfsh",
   "license": "MIT",
-  "packageManager": "pnpm@10.19.0",
   "type": "module",
+  "packageManager": "pnpm@10.19.0",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "bin": {
