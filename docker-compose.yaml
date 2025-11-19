@@ -1,0 +1,10 @@
+services:
+  db:
+    image: mysql
+    container_name: demo-db
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_DATABASE: demo
+    ports:
+      - "3306:3306"
+      - "33060:33060" 

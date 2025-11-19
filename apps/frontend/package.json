@@ -1,0 +1,24 @@
+{
+  "name": "@demo/frontend",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@vitejs/plugin-react": "catalog:bundler",
+    "antd": "catalog:react19",
+    "react": "catalog:react19",
+    "react-dom": "catalog:react19"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:linter",
+    "@types/react": "catalog:react19",
+    "@types/react-dom": "catalog:react19",
+    "vite": "catalog:bundler"
+  }
+}

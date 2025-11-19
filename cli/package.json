@@ -1,0 +1,36 @@
+{
+  "name": "@demo/cli",
+  "version": "1.0.0",
+  "description": "A command-line tool collection for webrtc-demo.",
+  "license": "MIT",
+  "packageManager": "pnpm@10.19.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "bin": {
+    "demo": "bin/index.js"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "commander": "catalog:cli",
+    "fs-extra": "catalog:",
+    "picocolors": "catalog:cli"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "catalog:",
+    "@types/node": "catalog:linter",
+    "axios": "catalog:",
+    "tsup": "catalog:bundler",
+    "tsx": "catalog:tools",
+    "typescript": "catalog:linter"
+  }
+}

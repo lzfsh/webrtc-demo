@@ -1,0 +1,25 @@
+{
+  "name": "webrtc-demo",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "private": true,
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "devDependencies": {
+    "@eslint-react/eslint-plugin": "catalog:linter",
+    "@eslint/js": "catalog:linter",
+    "@types/node": "catalog:linter",
+    "eslint": "catalog:linter",
+    "eslint-config-prettier": "catalog:linter",
+    "eslint-plugin-prettier": "catalog:linter",
+    "eslint-plugin-react-hooks": "catalog:linter",
+    "eslint-plugin-react-refresh": "catalog:linter",
+    "globals": "catalog:linter",
+    "prettier": "catalog:linter",
+    "typescript": "catalog:linter",
+    "typescript-eslint": "catalog:linter"
+  }
+}

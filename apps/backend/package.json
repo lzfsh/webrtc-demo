@@ -1,0 +1,28 @@
+{
+  "name": "api",
+  "version": "1.0.0",
+  "description": "",
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.20.0",
+  "scripts": {
+    "dev": "tsup --watch",
+    "build": "tsup",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@koa/router": "catalog:server",
+    "koa": "catalog:server"
+  },
+  "devDependencies": {
+    "@types/koa": "catalog:server",
+    "@types/koa__router": "catalog:server",
+    "@types/node": "catalog:linter",
+    "nodemon": "catalog:tools",
+    "tsup": "catalog:bunlder",
+    "typescript": "catalog:linter"
+  }
+}
