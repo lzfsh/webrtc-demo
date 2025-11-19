@@ -11,7 +11,7 @@ export interface Client {
   // patchForm: <D = any, R = any, C = any>(url: string, data: D, conf?: C) => Promise<R>
 }
 
-export interface Response<T = any> {
+export interface Response<T = null> {
   code: number
   reason?: string
   message: string
