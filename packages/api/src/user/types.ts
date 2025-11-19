@@ -10,7 +10,7 @@ export interface User {
   updatedAt: number
 }
 
-export interface LoginRequest extends Partial<Pick<User, 'username' | 'email'>> {
+export interface LoginRequest extends Pick<User, 'email'> {
   password: string
 }
 
