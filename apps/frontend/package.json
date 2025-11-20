@@ -10,15 +10,20 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "catalog:react",
+    "@demo/api": "workspace:*",
     "@vitejs/plugin-react": "catalog:bundler",
-    "antd": "catalog:react19",
-    "react": "catalog:react19",
-    "react-dom": "catalog:react19"
+    "antd": "catalog:react",
+    "dayjs": "catalog:",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "react-error-boundary": "catalog:react",
+    "react-router": "catalog:react"
   },
   "devDependencies": {
     "@types/node": "catalog:linter",
-    "@types/react": "catalog:react19",
-    "@types/react-dom": "catalog:react19",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
     "vite": "catalog:bundler"
   }
 }
