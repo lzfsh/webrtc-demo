@@ -1,6 +1,6 @@
 import type { Context, Next } from 'koa'
 import * as z from 'zod'
-import { badRequest, Code, internalServerError, notFound } from '../utils'
+import { badRequest, Code, internalServerError, notFound } from '@/helpers'
 
 export default function error() {
   return async (ctx: Context, next: Next) => {

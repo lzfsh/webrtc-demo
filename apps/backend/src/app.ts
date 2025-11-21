@@ -1,7 +1,7 @@
-import Koa from 'koa'
+import Koa, { type Injection } from 'koa'
 import bodyParser from '@koa/bodyparser'
 import type Router from '@koa/router'
-import { inject, error } from './middleware'
+import { error, inject } from './middlewares'
 
 export class App extends Koa {
   constructor() {
@@ -16,7 +16,7 @@ export class App extends Koa {
     return this
   }
 
-  inject(o: object) {
+  inject(o: Injection) {
     this.use(inject(o))
     return this
   }

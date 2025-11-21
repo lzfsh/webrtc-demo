@@ -1,6 +1,5 @@
 import { message } from 'statuses'
 import type { Response } from '@demo/api'
-import { constant } from './other'
 
 export const Code = Object.freeze({
   Ok: 200,
@@ -28,7 +27,7 @@ export class HttpResponse<T = null> {
       if (options.reason) return options.reason
       if (this.code < Code.Ok || this.code >= Code.MultipleChoices) {
         const ret = message[this.code]
-        if (ret) return constant(ret)
+        if (ret) return ret.toUpperCase().replace(/\s+/g, '_')
       }
     })()
     this.message = options.message ?? message[this.code] ?? (message[Code.Ok] as string)

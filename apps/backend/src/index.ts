@@ -1,9 +1,9 @@
-import { cac } from 'cac'
-import mysql from 'mysql2/promise'
-import { App } from './app'
-import { routers } from './router'
-import { parseConf, type Conf } from './utils'
 import path from 'node:path'
+import { cac } from 'cac'
+import { App } from './app'
+import type { Conf } from './configs'
+import { parseConf, createDBConnection } from './helpers'
+import apiRouter from './routers'
 
 interface MainOptions {
   name: string
@@ -12,13 +12,13 @@ interface MainOptions {
 }
 
 async function start(conf: Conf) {
-  const conn = await mysql.createConnection(conf.datasource)
+  const conn = await createDBConnection(conf.datasource)
 
   const app = new App()
   const { port = 3000 } = conf.server
-  app.inject({ conf, conn }).routers(...routers)
+  app.inject({ conf, conn }).routers(apiRouter)
   app.listen(port, () => {
-    console.log(`Server running on port http://127.0.0.1:${port}`)
+    console.log(`Server running on port http://localhost:${port}`)
   })
 }
 

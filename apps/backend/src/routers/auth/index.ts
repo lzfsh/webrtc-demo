@@ -2,12 +2,13 @@ import type { Context } from 'koa'
 import Router from '@koa/router'
 import * as z from 'zod'
 import type { LoginRequest } from '@demo/api'
-import { toUserDTO, type UserModel } from '../model/user'
-import { ok, unauthorized } from '../utils'
+import { toUserDTO, type UserModel } from '@/models'
+import { ok, unauthorized } from '@/helpers'
 
-const router = new Router()
+const router = new Router({ prefix: '/auth' })
 
-router.post('/api/user/login', async (ctx: Context) => {
+// POST /api/auth/login
+router.post('/login', async (ctx: Context) => {
   const { email, password } = z
     .object({
       email: z.string('email is not a string').min(1, 'email is empty'),
@@ -23,6 +24,11 @@ router.post('/api/user/login', async (ctx: Context) => {
   } else {
     ctx.body = unauthorized({ message: 'username or password is incorrect' })
   }
+})
+
+// POST /api/auth/register
+router.post('/register', async (ctx: Context) => {
+  ctx.body = ok({ message: 'register' })
 })
 
 export default router

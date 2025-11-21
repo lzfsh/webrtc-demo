@@ -1,17 +1,5 @@
+import type { Conf } from '@/configs'
 import { existsSync, readFileSync } from 'node:fs'
-
-export interface Conf {
-  server: {
-    port?: number
-  }
-  datasource: {
-    host: string
-    port: number
-    user: string
-    password: string
-    database: string
-  }
-}
 
 export function parseConf(file: string): Conf {
   if (!existsSync(file)) {
