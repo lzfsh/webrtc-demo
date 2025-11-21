@@ -164,6 +164,7 @@ export function createPopupHook<S>(...args: any[]): PopupHook<S> {
 }
 
 export const createAntdPopup = withPopupDefaults({
+  container: document.createDocumentFragment(),
   wrapper: (node) => (
     <ConfigProvider {...antdConf}>
       <App message={{ maxCount: 1 }}>{node}</App>
