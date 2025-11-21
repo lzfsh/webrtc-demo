@@ -46,13 +46,13 @@ export interface PopupAction<P extends PopupProps = PopupProps> {
  */
 export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: PopupOptions<P> = {}): PopupAction<P> {
   const body = globalThis.document.body
-  const defaultOptions = Object.freeze({
+  const defaultOptions = {
     defaultProps: {},
     container: body,
     autoClose: true,
     unmount: { delay: 300 },
     wrapper: (node: any) => node,
-  })
+  }
   const options: Required<PopupOptions<P>> = Object.assign({}, defaultOptions, opts)
   const action: PopupAction<P> = { options: Object.freeze(options), render, open, close, unmount }
 

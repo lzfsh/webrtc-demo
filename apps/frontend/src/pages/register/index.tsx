@@ -15,16 +15,21 @@ export default function Register() {
   const navigate = useNavigate()
 
   const onFinish = (values: FormValues) => {
+    //  去空格，密码不去
     console.log('Received values of form: ', cleanEmptyField(values))
   }
 
   return (
-    <Card title='Register' style={{ margin: '200px auto 0', width: 520 }}>
+    <Card title='Register' style={{ margin: '200px auto 0', width: 540 }}>
       <Form<FormValues> name='register' onFinish={onFinish}>
         <Form.Item<FormValues>
           label='Username'
           name='username'
-          rules={[{ required: true, message: 'Please input your username!' }]}
+          rules={[
+            { required: true, message: 'Please input your username!' },
+            { whitespace: true, message: 'Username cannot be only whitespace!' },
+            { min: 1, max: 50, message: 'Username must be between 1 and 50 characters!' },
+          ]}
         >
           <Input prefix={<UserOutlined />} placeholder='Username' allowClear />
         </Form.Item>
@@ -33,7 +38,7 @@ export default function Register() {
           name='email'
           rules={[
             { type: 'email', message: 'Input is not valid email!' },
-            { required: true, message: 'Please input your E-mail!' },
+            { required: true, message: 'Please input your email!' },
           ]}
         >
           <Input prefix={<MailOutlined />} placeholder='Email' allowClear />
@@ -41,7 +46,10 @@ export default function Register() {
         <Form.Item<FormValues>
           label='Password'
           name='password'
-          rules={[{ required: true, message: 'Please input your password!' }]}
+          rules={[
+            { required: true, message: 'Please input your password!' },
+            { min: 6, max: 20, message: 'Password must be between 6 and 20 characters long!' },
+          ]}
         >
           <Input.Password prefix={<LockOutlined />} type='password' placeholder='Password' allowClear />
         </Form.Item>
@@ -51,6 +59,7 @@ export default function Register() {
           dependencies={['password']}
           rules={[
             { required: true, message: 'Please confirm your password!' },
+            { min: 6, max: 20, message: 'Password must be between 6 and 20 characters long!' },
             ({ getFieldValue }) => ({
               validator: async (_, value) => {
                 if (value && getFieldValue('password') !== value) {
