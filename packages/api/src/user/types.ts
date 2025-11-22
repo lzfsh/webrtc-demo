@@ -10,19 +10,7 @@ export interface User {
   updatedAt: number
 }
 
-export interface LoginRequest extends Pick<User, 'email'> {
-  password: string
-}
-
-export interface LoginResponse extends User {
-  token: string // 登陆凭证
-}
-
-export interface RegisterRequest extends Pick<User, 'username' | 'email'> {
-  password: string
-}
-
-export type RegisterResponse = LoginResponse
+export type GetUserResponse = User
 
 export interface ListUserRequest {
   id?: number // 用户ID
