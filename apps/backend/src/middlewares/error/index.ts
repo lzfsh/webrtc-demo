@@ -1,9 +1,9 @@
-import type { Context, Next } from 'koa'
+import type { Context, Middleware, Next } from 'koa'
 import * as z from 'zod'
-import { badRequest, Code, internalServerError, notFound } from '@/helpers'
+import { badRequest, Code, internalServerError, notFound, unauthorized } from '@/helpers'
 
-export default function error() {
-  return async (ctx: Context, next: Next) => {
+export default function error(): Middleware {
+  const ret = async (ctx: Context, next: Next) => {
     try {
       await next()
 
@@ -15,17 +15,27 @@ export default function error() {
       // 处理参数校验错误，返回 400
       if (err instanceof z.ZodError) {
         const reason = 'INVALID_PARAM'
-        const message = err.issues.map((item) => item.message).join(', ')
+        const message = err.issues.map((item) => `${item.path.join(', ')}: ${item.message}`).join(', ')
         ctx.body = badRequest({ reason, message })
         return
       }
 
-      // 但其他中间件出现的错误，返回 500
+      // 处理其他中间件出现的错误，返回 500
       let message: string | undefined
+
       if (err instanceof Error) {
         message = err.message
+
+        // 处理 jwt 校验错误，返回 401
+        // TODO: 修改
+        if (err.name === 'UnauthorizedError') {
+          ctx.body = unauthorized({ message })
+          return
+        }
       }
+
       ctx.body = internalServerError({ message })
     }
   }
+  return ret as Middleware
 }

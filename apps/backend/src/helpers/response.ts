@@ -21,17 +21,17 @@ export class HttpResponse<T = null> {
   public readonly message: string
   public readonly data: T | null = null
 
-  constructor(options: Partial<Response<T>>) {
-    this.code = options.code ?? Code.Ok
+  constructor(opts: Partial<Response<T>>) {
+    this.code = opts.code ?? Code.Ok
     this.reason = (() => {
-      if (options.reason) return options.reason
+      if (opts.reason) return opts.reason
       if (this.code < Code.Ok || this.code >= Code.MultipleChoices) {
         const ret = message[this.code]
         if (ret) return ret.toUpperCase().replace(/\s+/g, '_')
       }
     })()
-    this.message = options.message ?? message[this.code] ?? (message[Code.Ok] as string)
-    this.data = options.data ?? null
+    this.message = opts.message ?? message[this.code] ?? (message[Code.Ok] as string)
+    this.data = opts.data ?? null
   }
 
   withData(data: T): HttpResponse<T> {
@@ -62,42 +62,42 @@ export function ok<T>(data: T): HttpResponse<T> {
 
 export type FailOptions = Partial<Pick<Response, 'code' | 'reason' | 'message'>>
 
-export function fail<T>(options: FailOptions = {}): HttpResponse<T> {
-  return new HttpResponse(options)
+export function fail<T>(opts: FailOptions = {}): HttpResponse<T> {
+  return new HttpResponse(opts)
 }
 
-export function badRequest(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.BadRequest })
+export function badRequest(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.BadRequest })
 }
 
-export function unauthorized(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.Unauthorized })
+export function unauthorized(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.Unauthorized })
 }
 
-export function forbidden(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.Forbidden })
+export function forbidden(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.Forbidden })
 }
 
-export function notFound(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.NotFound })
+export function notFound(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.NotFound })
 }
 
-export function conflict(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.Conflict })
+export function conflict(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.Conflict })
 }
 
-export function clientClosed(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.ClientClosed })
+export function clientClosed(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.ClientClosed })
 }
 
-export function internalServerError(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.InternalServerError })
+export function internalServerError(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.InternalServerError })
 }
 
-export function serviceUnavailable(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.ServiceUnavailable })
+export function serviceUnavailable(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.ServiceUnavailable })
 }
 
-export function gatewayTimeout(options: FailOptions = {}): HttpResponse {
-  return new HttpResponse({ ...options, code: Code.GatewayTimeout })
+export function gatewayTimeout(opts: FailOptions = {}): HttpResponse {
+  return new HttpResponse({ ...opts, code: Code.GatewayTimeout })
 }

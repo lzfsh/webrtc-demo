@@ -1,6 +1,7 @@
 {
-  "server": {
-    "port": 3000
+  "auth": {
+    "secret": "@demo/backend",
+    "expiresIn": "7d"
   },
   "datasource": {
     "host": "127.0.0.1",
