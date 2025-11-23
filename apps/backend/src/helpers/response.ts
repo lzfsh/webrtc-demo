@@ -1,19 +1,5 @@
 import { message } from 'statuses'
-import type { Response } from '@demo/api'
-
-export const Code = Object.freeze({
-  Ok: 200,
-  MultipleChoices: 300,
-  BadRequest: 400,
-  Unauthorized: 401,
-  Forbidden: 403,
-  NotFound: 404,
-  Conflict: 409,
-  ClientClosed: 499,
-  InternalServerError: 500,
-  ServiceUnavailable: 503,
-  GatewayTimeout: 504,
-})
+import { type Response, Code } from '@demo/api'
 
 export class HttpResponse<T = null> {
   public readonly code: number

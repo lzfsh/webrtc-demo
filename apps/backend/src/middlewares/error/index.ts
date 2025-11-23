@@ -1,6 +1,7 @@
 import type { Context, Middleware, Next } from 'koa'
 import * as z from 'zod'
-import { badRequest, Code, internalServerError, notFound, unauthorized } from '@/helpers'
+import { badRequest, internalServerError, notFound, unauthorized } from '@/helpers'
+import { Code } from '@demo/api'
 
 export default function error(): Middleware {
   const ret = async (ctx: Context, next: Next) => {
