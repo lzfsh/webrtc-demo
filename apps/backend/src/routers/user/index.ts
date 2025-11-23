@@ -48,8 +48,8 @@ router.post('/list', async (ctx: Context) => {
   // 查询所有用户（这里简单实现，其他项目可能需要分页）
   let sql: string = ''
   if (id) sql += `id = ${id}`
-  if (username) sql += `username LIKE "%${username}%"`
-  if (email) sql += `email = "${email}"`
+  if (username) sql += ` AND username LIKE "%${username}%"`
+  if (email) sql += ` AND email = "${email}"`
   const users = await userRepo.findMany(sql)
 
   // TODO: loginStatus
