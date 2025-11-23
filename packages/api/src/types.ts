@@ -15,5 +15,5 @@ export interface Response<T = null> {
   code: number
   reason?: string
   message: string
-  data: T
+  data?: T
 }
