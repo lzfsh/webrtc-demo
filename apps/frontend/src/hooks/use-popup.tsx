@@ -1,7 +1,7 @@
 import type { ReactNode, ComponentType } from 'react'
 import { App, ConfigProvider } from 'antd'
 import { renderNode, unmount as unmountContainer } from '@/utils/react'
-import { antdConf } from '@/configs/antd'
+import { GLOBAL_ANTD_CONF } from '@/configs/antd'
 
 /** 弹窗组件的基本 props */
 export interface PopupProps {
@@ -53,7 +53,7 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
     unmount: { delay: 300 },
     wrapper: (node: any) => node,
   }
-  const options: Required<PopupOptions<P>> = Object.assign({}, defaultOptions, opts)
+  const options: Required<PopupOptions<P>> = { ...defaultOptions, ...opts }
   const action: PopupAction<P> = { options: Object.freeze(options), render, open, close, unmount }
 
   /** 转换函数，主要是为 onOk 和 onClose 回调添加添加自动关闭弹窗的逻辑 */
@@ -70,7 +70,7 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
       if (options.autoClose) close(props, options)
       return ret
     }
-    return Object.assign({ open: false }, props, { onOk, onClose }) as P
+    return { open: false, ...props, onOk, onClose } as P
   }
 
   function unmount() {
@@ -108,7 +108,7 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
   }
 
   function close(props: Partial<P> = {}, opts: Pick<PopupOptions<P>, 'unmount'> = {}) {
-    const { unmount } = Object.assign({}, options, opts)
+    const { unmount } = { ...options, ...opts }
     return render({ ...props, open: false }).then(() => {
       return new Promise<void>((resolve) => {
         if (!unmount) return resolve()
@@ -166,7 +166,7 @@ export function createPopupHook<S>(...args: any[]): PopupHook<S> {
 export const createAntdPopup = withPopupDefaults({
   container: document.createDocumentFragment(),
   wrapper: (node) => (
-    <ConfigProvider {...antdConf}>
+    <ConfigProvider {...GLOBAL_ANTD_CONF}>
       <App message={{ maxCount: 1 }}>{node}</App>
     </ConfigProvider>
   ),

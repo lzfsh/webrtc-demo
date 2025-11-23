@@ -1,20 +1,33 @@
-import { RoutePath } from '@/configs'
-import { cleanEmptyField } from '@/utils'
-import { LockOutlined, MailOutlined } from '@ant-design/icons'
-import { Button, Card, Form, Input, Space } from 'antd'
 import { useNavigate } from 'react-router'
+import { pipe, __, curryN } from 'ramda'
+import { useRequest } from 'ahooks'
+import { Button, Card, Form, Input, Space } from 'antd'
+import { LockOutlined, MailOutlined } from '@ant-design/icons'
+import { RoutePath } from '@/configs'
+import { useAuthClient, useAuthStore } from '@/hooks'
+import { removeEmptyValues, trimObjectStrings } from '@/utils'
+import { isSuccess } from '@demo/api'
 
 interface FormValues {
   email: string
   password: string
 }
 
+const trimExcludePassword = curryN(2, trimObjectStrings<FormValues>)(__, { exclude: ['password'] })
+
 export default function Login() {
   const navigate = useNavigate()
+  const { setUser } = useAuthStore()
+  const { loading, runAsync: login } = useRequest(useAuthClient().login, { manual: true })
 
-  const onFinish = (values: FormValues) => {
-    // 去空格，密码不去
-    console.log('Received values of form: ', cleanEmptyField(values))
+  const onFinish = async (values: FormValues) => {
+    // 1. 去掉空值 2. 去掉字符串值左右空格，密码不去
+    const transform = pipe(removeEmptyValues<FormValues>, trimExcludePassword)
+    const resp = await login(transform(values))
+    if (isSuccess(resp) && resp?.data) {
+      setUser(resp.data)
+      navigate(RoutePath.Home)
+    }
   }
 
   return (
@@ -39,7 +52,7 @@ export default function Login() {
           <Input.Password prefix={<LockOutlined />} type='password' placeholder='Password' allowClear />
         </Form.Item>
         <Form.Item style={{ margin: '16px 0 0' }}>
-          <Button type='primary' htmlType='submit' block loading={false}>
+          <Button type='primary' htmlType='submit' block loading={loading}>
             Log in
           </Button>
           <Space align='center'>

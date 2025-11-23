@@ -13,15 +13,20 @@
     "@ant-design/icons": "catalog:react",
     "@demo/api": "workspace:*",
     "@vitejs/plugin-react": "catalog:bundler",
+    "ahooks": "catalog:react",
     "antd": "catalog:react",
+    "axios": "catalog:",
     "dayjs": "catalog:",
+    "ramda": "catalog:",
     "react": "catalog:react",
     "react-dom": "catalog:react",
     "react-error-boundary": "catalog:react",
-    "react-router": "catalog:react"
+    "react-router": "catalog:react",
+    "zustand": "catalog:react"
   },
   "devDependencies": {
     "@types/node": "catalog:linter",
+    "@types/ramda": "catalog:",
     "@types/react": "catalog:react",
     "@types/react-dom": "catalog:react",
     "vite": "catalog:bundler"

@@ -1,8 +1,12 @@
-import { Button, Card, Form, Input, Space } from 'antd'
 import { useNavigate } from 'react-router'
+import { useRequest } from 'ahooks'
+import { __, curryN, omit, pipe } from 'ramda'
+import { Button, Card, Form, Input, Space } from 'antd'
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { RoutePath } from '@/configs'
-import { cleanEmptyField } from '@/utils'
+import { removeEmptyValues, trimObjectStrings } from '@/utils'
+import { useAuthClient, useAuthStore } from '@/hooks'
+import { isSuccess, type RegisterRequest } from '@demo/api'
 
 interface FormValues {
   username: string
@@ -11,12 +15,22 @@ interface FormValues {
   confirmPassword: string
 }
 
+const trimExcludePassword = curryN(2, trimObjectStrings<RegisterRequest>)(__, { exclude: ['password'] })
+
 export default function Register() {
   const navigate = useNavigate()
 
-  const onFinish = (values: FormValues) => {
-    //  去空格，密码不去
-    console.log('Received values of form: ', cleanEmptyField(values))
+  const { setUser } = useAuthStore()
+  const { loading, runAsync: register } = useRequest(useAuthClient().register, { manual: true })
+
+  const onFinish = async (values: FormValues) => {
+    // 1. 去掉空值 2. 去掉 confirmPassword 字段 3. 去掉字符串值左右空格，密码不去
+    const transform = pipe(removeEmptyValues<FormValues>, omit(['confirmPassword']), trimExcludePassword)
+    const resp = await register(transform(values))
+    if (isSuccess(resp) && resp?.data) {
+      setUser(resp.data)
+      navigate(RoutePath.Home)
+    }
   }
 
   return (
@@ -72,7 +86,7 @@ export default function Register() {
           <Input.Password prefix={<LockOutlined />} placeholder='Confirm Password' allowClear />
         </Form.Item>
         <Form.Item style={{ margin: '16px 0 0' }}>
-          <Button type='primary' htmlType='submit' block loading={false}>
+          <Button type='primary' htmlType='submit' block loading={loading}>
             Register
           </Button>
           <Space align='center'>

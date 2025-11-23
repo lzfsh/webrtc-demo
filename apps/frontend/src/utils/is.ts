@@ -2,6 +2,10 @@ export function isObject(val: unknown): val is object {
   return typeof val === 'object' && val !== null
 }
 
+export function isString(val: unknown): val is string {
+  return typeof val === 'string'
+}
+
 /**
  * 判断是否为空值，空值为 undefined/null/空字符串（trim）/空数组/空对象/NaN，0 和 0n 被认为是有效值
  */

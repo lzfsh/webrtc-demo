@@ -4,7 +4,7 @@ import { useMemo } from 'react'
 
 const { Text } = Typography
 
-const defaultRow = 5
+const DEFAULT_ROW = 5
 
 const labels = Object.freeze({
   [LoginStatus.Online]: 'Online',
@@ -21,7 +21,7 @@ export interface UserCardProps {
   info: UserWithLoginStatus
   onConnect?: (info: UserCardProps['info']) => void
 }
-export function UserCard({ row = defaultRow, info, onConnect }: UserCardProps) {
+export function UserCard({ row = DEFAULT_ROW, info, onConnect }: UserCardProps) {
   const width = useMemo(() => `calc((100% - (16px * ${row - 1})) / ${row})`, [row])
 
   const [loginStatus, badgeStatus] = useMemo(

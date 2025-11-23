@@ -1,15 +1,19 @@
-import { useNavigate } from 'react-router'
-import type { PropsWithChildren } from 'react'
+import { Outlet, useNavigate } from 'react-router'
 import { Layout as AntdLayout, Avatar, Button, Flex, Space, Typography } from 'antd'
 import { RoutePath } from '@/configs'
+import { useAuthStore } from '@/hooks'
+import { AuthGuarder } from '@/components'
 
 const { Header, Content } = AntdLayout
 const { Title } = Typography
 
-export function Layout({ children }: PropsWithChildren) {
+export function Layout() {
   const navigate = useNavigate()
+  const authStore = useAuthStore()
+  const { user } = authStore
 
   const logout = () => {
+    authStore.clear()
     navigate(RoutePath.Login)
   }
 
@@ -21,18 +25,32 @@ export function Layout({ children }: PropsWithChildren) {
             WebRTC Demo
           </Title>
 
-          <Space align='center' size={12}>
-            <Button type='primary' danger onClick={logout}>
-              Logout
-            </Button>
-            <span style={{ color: '#fff', fontWeight: 'bold' }}>User</span>
-            <Avatar style={{ backgroundColor: '#f56a00' }} size='large'>
-              U
-            </Avatar>
-          </Space>
+          <AuthGuarder
+            fallback={
+              <Button type='primary' danger onClick={() => navigate(RoutePath.Login)}>
+                Login
+              </Button>
+            }
+          >
+            <Space align='center' size={12}>
+              {user && (
+                <>
+                  <Button type='primary' danger onClick={logout}>
+                    Logout
+                  </Button>
+                  <span style={{ color: '#fff', fontWeight: 'bold' }}>{user.username}</span>
+                  <Avatar style={{ backgroundColor: '#f56a00' }} size='large'>
+                    {user.username[0]}
+                  </Avatar>
+                </>
+              )}
+            </Space>
+          </AuthGuarder>
         </Flex>
       </Header>
-      <Content style={{ padding: 16 }}>{children}</Content>
+      <Content style={{ padding: 16 }}>
+        <Outlet />
+      </Content>
     </AntdLayout>
   )
 }

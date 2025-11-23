@@ -1,12 +1,23 @@
 import { lazy } from 'react'
-import { RoutePath } from './const'
 
 export interface RouteConf {
   path: string
   component: React.FC
+  layout?: boolean
+  auth?: boolean
 }
 
-export const routes: RouteConf[] = [
+export const RoutePath = Object.freeze({
+  Root: '/',
+  Home: '/home',
+  Login: '/login',
+  Register: '/register',
+  Connect: '/connect',
+  NotFound: '/404',
+  Other: '*',
+})
+
+export const APP_ROUTE: RouteConf[] = [
   {
     path: RoutePath.Login,
     component: lazy(() => import('@/pages/login')),
@@ -18,13 +29,20 @@ export const routes: RouteConf[] = [
   {
     path: RoutePath.Home,
     component: lazy(() => import('@/pages/home')),
+    layout: true,
+    auth: true,
   },
   {
     path: RoutePath.Connect,
     component: lazy(() => import('@/pages/connect')),
+    layout: true,
+    auth: true,
   },
   {
     path: RoutePath.NotFound,
     component: lazy(() => import('@/pages/not-found')),
   },
 ]
+
+export const IN_LAYOUT_ROUTE = APP_ROUTE.filter(({ layout }) => layout)
+export const OUT_LAYOUT_ROUTE = APP_ROUTE.filter(({ layout }) => !layout)

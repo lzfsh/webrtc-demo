@@ -9,7 +9,7 @@ import 'dayjs/locale/zh-cn'
  */
 dayjs.locale('zh-cn')
 
-export const antdConf: ConfigProviderProps = Object.freeze({
+export const GLOBAL_ANTD_CONF: Readonly<ConfigProviderProps> = Object.freeze({
   form: { colon: false },
   locale: zhCN,
   theme: { token: { fontSize: 14 } },
