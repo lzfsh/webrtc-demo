@@ -3,7 +3,7 @@ import { cac } from 'cac'
 import bodyParser from '@koa/bodyparser'
 import logger from 'koa-logger'
 import { App } from './app'
-import { DefaultAppConf, type AppConf, type Conf } from './configs'
+import { DEFAULT_APP_CONF, type AppConf, type Conf } from './configs'
 import { parseConf, createDBConnection } from './helpers'
 import apiRouter from './routers'
 import { error } from './middlewares'
@@ -33,7 +33,7 @@ async function main({ name, description, version }: AppConf): Promise<MainResult
     cli
       .command('start', description)
       .option('-c, --config <path>', 'Path to config file')
-      .option('-p,--port <port>', 'Port to listen on', { default: DefaultAppConf.port })
+      .option('-p,--port <port>', 'Port to listen on', { default: DEFAULT_APP_CONF.port })
       .action(({ config, port }) => {
         const file = path.join(process.cwd(), ...config.split(path.sep))
         resolve({ port, conf: parseConf(file) })
@@ -45,7 +45,7 @@ async function main({ name, description, version }: AppConf): Promise<MainResult
 }
 
 if (require.main === module) {
-  const appConf: AppConf = Object.assign({}, DefaultAppConf, {
+  const appConf: AppConf = Object.assign({}, DEFAULT_APP_CONF, {
     name: process.env.NAME,
     description: process.env.DESCRIPTION,
     version: process.env.VERSION,

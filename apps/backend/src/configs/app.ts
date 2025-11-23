@@ -5,7 +5,7 @@ export interface AppConf {
   readonly port: number
 }
 
-export const DefaultAppConf: AppConf = Object.freeze({
+export const DEFAULT_APP_CONF: AppConf = Object.freeze({
   name: process.env.NAME ?? '@demo/server',
   description: process.env.DESCRIPTION ?? 'Backend server for demo.',
   version: process.env.VERSION ?? '1.0.0',

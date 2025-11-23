@@ -23,7 +23,7 @@ export interface Conf {
   readonly datasource?: DataSourceConf
 }
 
-export const DefaultConf: Conf = Object.freeze({
+export const DEFAULT_CONF: Conf = Object.freeze({
   auth: {
     expiresIn: '7d',
   },
