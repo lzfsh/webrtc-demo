@@ -9,9 +9,8 @@ export function UserClient<C extends object>(client: HttpClient<C>) {
     return client.get<Response<GetUserResponse>>(GET_USER_URL, conf)
   }
 
-  const ListUserURL = '/api/user/list'
   const listUser = (req: ListUserRequest, conf?: C) => {
-    return client.post<ListUserRequest, Response<ListUserResponse>>(ListUserURL, req, conf)
+    return client.post<ListUserRequest, Response<ListUserResponse>>(LIST_USER_URL, req, conf)
   }
 
   return { GET_USER_URL, getUser, LIST_USER_URL, listUser } as const

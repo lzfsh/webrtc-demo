@@ -23,10 +23,8 @@ export default function error(): Middleware {
 
       // 处理其他中间件出现的错误，返回 500
       let message: string | undefined
-
       if (err instanceof Error) {
         message = err.message
-
         // 处理 jwt 校验错误，返回 401
         // TODO: 修改
         if (err.name === 'UnauthorizedError') {

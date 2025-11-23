@@ -1,5 +1,5 @@
 import axios, { CanceledError, type AxiosRequestConfig } from 'axios'
-import { AuthClient, Code, isSuccess, UserClient, type HttpClient, LOGIN_URL, REGISTER_URL } from '@demo/api'
+import { AuthClient, Code, isFailure, UserClient, type HttpClient, LOGIN_URL, REGISTER_URL } from '@demo/api'
 import { useMessage } from './use-feedback'
 import { useMemo } from 'react'
 import { RoutePath } from '@/configs'
@@ -37,7 +37,7 @@ export function useHttpClient() {
     instance.interceptors.response.use(
       (response) => {
         const { data } = response
-        if (!isSuccess(data)) message.error(data.message)
+        if (isFailure(data)) message.error(data.message)
         if (data.code === Code.Unauthorized) {
           navigate(RoutePath.Login)
           authStore.clear()
