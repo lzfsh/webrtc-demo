@@ -1,56 +1,55 @@
 import path from 'node:path'
 import { cac } from 'cac'
+import Koa, { type Injection } from 'koa'
 import bodyParser from '@koa/bodyparser'
 import logger from 'koa-logger'
-import { App } from './app'
-import { DEFAULT_APP_CONF, type AppConf, type Conf } from './configs'
-import { parseConf, createDBConnection } from './helpers'
+import { defaultConf, mergeConf, parseConf, type Conf } from './configs'
 import apiRouter from './routers'
-import { error } from './middlewares'
+import { error, inject } from './middlewares'
+import { createClientSession, createDBConnection } from './helpers'
 
-async function listen(port: number, conf: Conf = {}) {
-  if (!conf.datasource) throw new Error('config.datasource is required')
-  const conn = await createDBConnection(conf.datasource)
+const name = process.env.NAME ?? '@demo/server'
+const description = process.env.DESCRIPTION ?? 'Backend server for demo.'
+const version = process.env.VERSION ?? '1.0.0'
 
-  const app = new App()
+async function listen(conf: Conf = {}): Promise<void> {
+  if (!conf.data?.database) throw new Error('config.data.database is required')
 
-  app.use(error()).use(logger()).use(bodyParser())
-  app.inject({ conf, conn }).routers(apiRouter)
-
-  app.listen(port, () => {
-    console.log(`Server running on port http://localhost:${port}`)
+  const conn = await createDBConnection(conf.data.database)
+  const clientSession = createClientSession({
+    expiresIn: conf.server!.websocket!.heartbeat!,
+    retainsIn: conf.server!.auth!.expiresIn!,
   })
+  const injection: Injection = { conf, conn, session: { client: clientSession } }
+
+  const app = new Koa()
+  app.use(error()).use(logger()).use(bodyParser()).use(inject(injection))
+  app.use(apiRouter.routes()).use(apiRouter.allowedMethods())
+  app.listen(conf.server!.port!)
 }
 
-interface MainResult {
-  port: number
-  conf: Conf
-}
-
-async function main({ name, description, version }: AppConf): Promise<MainResult> {
-  return new Promise<MainResult>((resolve) => {
-    const cli = cac(name)
-    cli
-      .command('start', description)
-      .option('-c, --config <path>', 'Path to config file')
-      .option('-p,--port <port>', 'Port to listen on', { default: DEFAULT_APP_CONF.port })
-      .action(({ config, port }) => {
-        const file = path.join(process.cwd(), ...config.split(path.sep))
-        resolve({ port, conf: parseConf(file) })
-      })
-    cli.version(version)
-    cli.help()
-    cli.parse()
-  })
+function main() {
+  const cli = cac(name)
+  cli
+    .command('start', description)
+    .option('-c, --config <path>', 'Path to config file')
+    .option('-p,--port <port>', 'Port to listen on', { default: defaultConf.server!.port })
+    .action(async (opts) => {
+      try {
+        const file = path.join(process.cwd(), ...opts.config.split(path.sep))
+        // 合并配置文件和命令行参数
+        const conf = mergeConf(defaultConf, parseConf(file), { server: { port: opts.port } })
+        await listen(conf)
+        console.log(`Server running on port http://localhost:${conf.server!.port!}`)
+      } catch (err) {
+        console.error(err)
+      }
+    })
+  cli.version(version)
+  cli.help()
+  cli.parse()
 }
 
 if (require.main === module) {
-  const appConf: AppConf = Object.assign({}, DEFAULT_APP_CONF, {
-    name: process.env.NAME,
-    description: process.env.DESCRIPTION,
-    version: process.env.VERSION,
-  })
-  main(appConf).then(({ port, conf }) => {
-    listen(port, conf)
-  })
+  main()
 }

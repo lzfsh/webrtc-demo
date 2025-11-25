@@ -2,11 +2,11 @@ import middleware from 'koa-jwt'
 import type { Context, Middleware, Next } from 'koa'
 import type { Options } from 'koa-jwt'
 
-export type JwtMiddleWareOptions = Partial<Pick<Options, 'isRevoked' | 'debug'>>
+export type JwtMiddleWareOptions = Partial<Pick<Options, 'getToken' | 'isRevoked' | 'passthrough' | 'cookie' | 'debug'>>
 
 export default function jwt(opts: JwtMiddleWareOptions = {}): Middleware {
   const ret = async (ctx: Context, next: Next) => {
-    const { auth } = ctx.inject.conf
+    const { auth } = ctx.inject.conf.server ?? {}
     // interface Options {
     //   /** 设置用于签名和验证 JWT 的密钥 */
     //   secret: Secret | SecretLoader

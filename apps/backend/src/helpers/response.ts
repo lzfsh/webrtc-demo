@@ -42,8 +42,8 @@ export class HttpResponse<T = null> {
   }
 }
 
-export function ok<T>(data: T): HttpResponse<T> {
-  return new HttpResponse({ code: Code.Ok, message: 'ok', data })
+export function ok<T>(data?: T): HttpResponse<T> {
+  return new HttpResponse({ code: Code.Ok, message: 'ok', data: (data ?? null) as any })
 }
 
 export type FailOptions = Partial<Pick<Response, 'code' | 'reason' | 'message'>>

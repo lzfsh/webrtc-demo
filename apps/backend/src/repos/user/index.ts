@@ -59,7 +59,7 @@ export class UserRepo {
     return rows.map(toUserDTO)
   }
 
-  async insert(user: Pick<UserModel, 'username' | 'email' | 'password'>) {
+  async insert(user: { username: string; email: string; password: string }) {
     const { username, email, password } = user
     const sql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)'
     const [{ insertId }] = await this._db.query<ResultSetHeader>(sql, [username, email, password])

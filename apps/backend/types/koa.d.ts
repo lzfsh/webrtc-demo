@@ -1,6 +1,7 @@
 import 'koa'
 import type { Connection } from 'mysql2/promise'
 import type { Conf } from '@/configs'
+import type { ClientSession } from '@/helpers/client'
 
 declare module 'koa' {
   export type State = Readonly<{
@@ -13,6 +14,9 @@ declare module 'koa' {
   export type Injection = Readonly<{
     conn: Connection
     conf: Conf
+    session: {
+      client: ClientSession
+    }
   }>
 
   interface Context {
