@@ -59,11 +59,14 @@ catalogs:
     '@types/koa-logger': ^3.1.5
     '@types/koa__router': ^12.0.5
     '@types/statuses': ^2.0.6
+    '@types/ws': ^8.18.1
     koa: ^3.1.1
     koa-compose: 4.1.0
     koa-jwt: ^4.0.4
     koa-logger: ^4.0.0
+    koa-unless: ^1.0.7
     statuses: ^2.0.2
+    ws: ^8.18.3
   tools:
     nodemon: ^3.1.11
     tsx: ^4.20.6

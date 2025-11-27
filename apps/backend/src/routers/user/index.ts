@@ -2,27 +2,27 @@ import type { Context } from 'koa'
 import Router from '@koa/router'
 import * as z from 'zod'
 import { notFound, ok, unauthorized } from '@/helpers'
-import { jwt } from '@/middlewares'
 import { UserRepo } from '@/repos'
 import { LoginStatus, type GetUserResponse, type ListUserRequest, type ListUserResponse } from '@demo/api'
+import { jwt, session } from '@/middlewares'
 
-const router = new Router()
-
-router.prefix('/user').use(jwt())
+const router = new Router({ prefix: '/user' })
+router.use(jwt(), session())
 
 // GET /api/user/profile
 // curl -s -X GET http://localhost:3000/api/user/profile -H "Authorization: Bearer <token>" | jq '.'
 router.get('/profile', async (ctx: Context) => {
-  const { conn } = ctx.inject
-  const { id } = ctx.state.user
-  if (!id) {
+  const { inject, state } = ctx
+  const { conn } = inject
+
+  if (!state.user?.id) {
     ctx.body = unauthorized()
     return
   }
 
   // 查询用户信息
   const userRepo = new UserRepo(conn)
-  const user = await userRepo.findOneByID(id)
+  const user = await userRepo.findOneByID(state.user.id)
   if (!user) {
     ctx.body = notFound({ message: 'User not found' })
     return
@@ -34,7 +34,9 @@ router.get('/profile', async (ctx: Context) => {
 // POST /api/user/list
 // curl -s -X POST http://localhost:3000/api/user/list -H "Authorization: Bearer <token>" -H "Content-Type: application/json" | jq '.'
 router.post('/list', async (ctx: Context) => {
-  const { conn, session } = ctx.inject
+  const { request, inject, state, session } = ctx
+  const { conn } = inject
+
   const { id, username, email, loginStatus } = z
     .object({
       id: z.number().int().gte(1).optional(),
@@ -42,7 +44,7 @@ router.post('/list', async (ctx: Context) => {
       email: z.string().trim().email().optional(),
       loginStatus: z.union([z.literal(LoginStatus.Online), z.literal(LoginStatus.Offline)]).optional(),
     })
-    .parse(ctx.request.body as ListUserRequest)
+    .parse(request.body as ListUserRequest)
 
   // 创建用户模型实例
   const userRepo = new UserRepo(conn)
@@ -53,9 +55,12 @@ router.post('/list', async (ctx: Context) => {
   if (email) sql.push(`email = "${email}"`)
   const users = await userRepo.findMany(sql.join(' AND '))
 
-  let response: ListUserResponse = users.map((user) => {
-    return { ...user, loginStatus: session.client.get(user.id) ? LoginStatus.Online : LoginStatus.Offline }
-  })
+  let response: ListUserResponse = users
+    .filter((u) => state.user?.id !== u.id)
+    .map((u) => ({
+      ...u,
+      loginStatus: session.manager.getUser(u.id)?.isOnline() ? LoginStatus.Online : LoginStatus.Offline,
+    }))
   if (loginStatus != void 0) {
     response = response.filter((u) => u.loginStatus === loginStatus)
   }

@@ -29,7 +29,7 @@ export function mergeConf(...configs: Conf[]): Conf {
         auth: {
           ...acc.server?.auth,
           ...cur.server?.auth,
-        },
+        } as any,
       },
       data: {
         ...acc.data,

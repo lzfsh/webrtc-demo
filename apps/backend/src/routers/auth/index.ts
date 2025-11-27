@@ -4,22 +4,23 @@ import * as z from 'zod'
 import type { LoginRequest, LoginResponse, RegisterRequest, RegisterResponse } from '@demo/api'
 import { UserRepo } from '@/repos'
 import { badRequest, conflict, generateToken, ok } from '@/helpers'
-import { jwt } from '@/middlewares'
+import { jwt, session } from '@/middlewares'
 
-const router = new Router()
-
-router.prefix('/auth')
+const router = new Router({ prefix: '/auth' })
+router.use(jwt({ passthrough: true }).unless({ path: ['/auth/login', '/auth/register'] }), session())
 
 // POST /api/auth/login
 // curl -s -X POST http://localhost:3000/api/auth/login -d '{"email": "zhangsan@example.com", "password": "123456"}' -H "Content-Type: application/json | jq "."
 router.post('/login', async (ctx: Context) => {
-  const { conf, conn, session } = ctx.inject
+  const { request, inject, session } = ctx
+  const { conf, conn } = inject
+
   const { email, password } = z
     .object({
       email: z.string().trim().email(),
       password: z.string().min(6).max(20),
     })
-    .parse(ctx.request.body as LoginRequest)
+    .parse(request.body as LoginRequest)
 
   const userRepo = new UserRepo(conn)
   const user = await userRepo.findOne('email = ? AND password = ?', email, password)
@@ -28,10 +29,14 @@ router.post('/login', async (ctx: Context) => {
     return
   }
 
-  const token = generateToken({ id: user.id }, conf.server?.auth)
+  const token = generateToken({ id: user.id }, conf.server.auth)
   // 存储 token 到 session，设置客户端在线状态
-  session.client.add(user.id, { token })
-  console.log(session.client.get(user.id))
+  session.manager.createUserSession({
+    id: user.id,
+    token,
+    inactiveIn: conf.server.websocket.heartbeat * 3,
+    expireIn: conf.server.auth.expiresIn,
+  })
 
   // 简单点，不设置 cookie，直接返回 token
   const response: LoginResponse = { ...user, token }
@@ -41,14 +46,16 @@ router.post('/login', async (ctx: Context) => {
 // POST /api/auth/register
 // curl -s -X POST http://localhost:3000/api/auth/register -d '{"email": "wangwu@example.com", "username": "wangwu", "password": "123456"}' -H "Content-Type: application/json | jq "."
 router.post('/register', async (ctx: Context) => {
-  const { conf, conn, session } = ctx.inject
+  const { request, inject, session } = ctx
+  const { conf, conn } = inject
+
   const { username, email, password } = z
     .object({
       username: z.string().trim().min(1).max(50),
       email: z.string().trim().email(),
       password: z.string().min(6).max(20),
     })
-    .parse(ctx.request.body as RegisterRequest)
+    .parse(request.body as RegisterRequest)
 
   // 检查用户是否已存在
   const userRepo = new UserRepo(conn)
@@ -65,9 +72,14 @@ router.post('/register', async (ctx: Context) => {
     return
   }
 
-  const token = generateToken({ id: user.id }, conf.server?.auth)
+  const token = generateToken({ id: user.id }, conf.server.auth)
   // 存储 token 到 session，设置客户端在线状态
-  session.client.add(user.id, { token })
+  session.manager.createUserSession({
+    id: user.id,
+    token,
+    inactiveIn: conf.server.websocket.heartbeat * 3,
+    expireIn: conf.server.auth.expiresIn,
+  })
 
   // 简单点，不设置 cookie，直接返回 token
   const response: RegisterResponse = { ...user, token }
@@ -76,11 +88,11 @@ router.post('/register', async (ctx: Context) => {
 
 // POST /api/auth/logout
 // curl -s -X POST http://localhost:3000/api/auth/logout -H "Authorization: Bearer <token>" -H "Content-Type: application/json | jq "."
-router.post('/logout', jwt({ passthrough: true }), async (ctx: Context) => {
-  const { id } = ctx.state.user
-  if (id) {
+router.post('/logout', async (ctx: Context) => {
+  const { state, session } = ctx
+  if (state.user?.id && state.token) {
     // 从 session 中删除客户端在线状态
-    ctx.inject.session.client.remove(id)
+    session.manager.removeUserSession(state.user.id, state.token)
   }
   ctx.body = ok()
 })

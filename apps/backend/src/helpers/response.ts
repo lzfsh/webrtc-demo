@@ -42,8 +42,9 @@ export class HttpResponse<T = null> {
   }
 }
 
+/** 成功响应，不传 data 时，返回 data 为 null */
 export function ok<T>(data?: T): HttpResponse<T> {
-  return new HttpResponse({ code: Code.Ok, message: 'ok', data: (data ?? null) as any })
+  return new HttpResponse({ code: Code.Ok, message: 'ok', data })
 }
 
 export type FailOptions = Partial<Pick<Response, 'code' | 'reason' | 'message'>>

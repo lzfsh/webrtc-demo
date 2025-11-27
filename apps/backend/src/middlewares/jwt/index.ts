@@ -1,12 +1,13 @@
-import middleware from 'koa-jwt'
-import type { Context, Middleware, Next } from 'koa'
-import type { Options } from 'koa-jwt'
+import type { Context, Next } from 'koa'
+import middleware, { type Options, type Middleware as JWTMiddleware } from 'koa-jwt'
+// @ts-expect-error no types for unless
+import unless from 'koa-unless'
 
 export type JwtMiddleWareOptions = Partial<Pick<Options, 'getToken' | 'isRevoked' | 'passthrough' | 'cookie' | 'debug'>>
 
-export default function jwt(opts: JwtMiddleWareOptions = {}): Middleware {
+export default function jwt(opts: JwtMiddleWareOptions = {}): JWTMiddleware {
   const ret = async (ctx: Context, next: Next) => {
-    const { auth } = ctx.inject.conf.server ?? {}
+    const { conf } = ctx.inject
     // interface Options {
     //   /** 设置用于签名和验证 JWT 的密钥 */
     //   secret: Secret | SecretLoader
@@ -31,11 +32,11 @@ export default function jwt(opts: JwtMiddleWareOptions = {}): Middleware {
     //   /** 指定支持的加密算法*/
     //   algorithms?: string[]
     // }
-    await middleware({
-      secret: auth?.secret ?? '',
-      // algorithms: auth?.algorithm ? [auth.algorithm] : void 0,
-      // audience: auth?.audience,
-      // issuer: auth?.issuer,
+    return await middleware({
+      secret: conf.server.auth.secret,
+      algorithms: conf.server.auth.algorithm ? [conf.server.auth.algorithm] : void 0,
+      audience: conf.server.auth.audience,
+      issuer: conf.server.auth.issuer,
       // 如果是采用 cookie 登陆，这里最好写死 cookie
       // cookie: auth?.cookie,
       /** key 写死，不要改，后面 Router 中间件都是通过 ctx.state.user 来获取用户信息 */
@@ -45,5 +46,6 @@ export default function jwt(opts: JwtMiddleWareOptions = {}): Middleware {
       ...opts,
     })(ctx, next)
   }
-  return ret as Middleware
+  Object.assign(ret, { unless })
+  return ret as JWTMiddleware
 }

@@ -29,8 +29,10 @@
     "koa": "catalog:server",
     "koa-jwt": "catalog:server",
     "koa-logger": "catalog:server",
+    "koa-unless": "catalog:server",
     "mysql2": "catalog:",
     "statuses": "catalog:server",
+    "ws": "catalog:server",
     "zod": "catalog:"
   },
   "devDependencies": {
@@ -40,6 +42,7 @@
     "@types/koa__router": "catalog:server",
     "@types/node": "catalog:linter",
     "@types/statuses": "catalog:server",
+    "@types/ws": "catalog:server",
     "nodemon": "catalog:tools",
     "tsup": "catalog:bunlder",
     "typescript": "catalog:linter"
