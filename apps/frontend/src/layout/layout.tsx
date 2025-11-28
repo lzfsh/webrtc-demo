@@ -1,8 +1,10 @@
 import { Outlet, useNavigate } from 'react-router'
 import { Layout as AntdLayout, Avatar, Button, Flex, Space, Typography } from 'antd'
 import { RoutePath } from '@/configs'
-import { useAuthStore } from '@/hooks'
-import { AuthGuarder } from '@/components'
+import { useRequest } from 'ahooks'
+import { useAuthStore } from '@/stores'
+import { useAuthClient } from '@/services'
+import { AuthGuarder } from './auth'
 
 const { Header, Content } = AntdLayout
 const { Title } = Typography
@@ -12,7 +14,10 @@ export function Layout() {
   const authStore = useAuthStore()
   const { user } = authStore
 
-  const logout = () => {
+  const { run: logout } = useRequest(useAuthClient().logout, { manual: true })
+
+  const handleLogout = () => {
+    logout()
     authStore.clear()
     navigate(RoutePath.Login)
   }
@@ -35,7 +40,7 @@ export function Layout() {
             <Space align='center' size={12}>
               {user && (
                 <>
-                  <Button type='primary' danger onClick={logout}>
+                  <Button type='primary' danger onClick={handleLogout}>
                     Logout
                   </Button>
                   <span style={{ color: '#fff', fontWeight: 'bold' }}>{user.username}</span>

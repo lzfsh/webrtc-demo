@@ -4,9 +4,10 @@ import { useRequest } from 'ahooks'
 import { Button, Card, Form, Input, Space } from 'antd'
 import { LockOutlined, MailOutlined } from '@ant-design/icons'
 import { RoutePath } from '@/configs'
-import { useAuthClient, useAuthStore } from '@/hooks'
+import { useAuthStore } from '@/stores'
 import { removeEmptyValues, trimObjectStrings } from '@/utils'
 import { isSuccess } from '@demo/api'
+import { useAuthClient } from '@/services'
 
 interface FormValues {
   email: string

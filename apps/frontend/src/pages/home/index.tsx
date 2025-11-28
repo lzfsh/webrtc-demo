@@ -4,10 +4,11 @@ import { Button, Flex, Form, Input, Select, Space, Tooltip, Typography } from 'a
 import { RedoOutlined, SearchOutlined } from '@ant-design/icons'
 import { pipe } from 'ramda'
 import { Code, LoginStatus, type ILoginStatus, type ListUserRequest } from '@demo/api'
+import { useAuthStore } from '@/stores'
 import { removeEmptyValues, trimObjectStrings } from '@/utils'
-import { useAuthStore, useUserClient } from '@/hooks'
 import { Loading } from '@/components'
 import { UserCard } from './user-card'
+import { useUserClient } from '@/services'
 
 const { Text } = Typography
 

@@ -1,6 +1,6 @@
-import { RoutePath } from '@/configs'
-import { Button, Result } from 'antd'
 import { useNavigate } from 'react-router'
+import { Button, Result } from 'antd'
+import { RoutePath } from '@/configs'
 
 export default function NotFound() {
   const navigate = useNavigate()

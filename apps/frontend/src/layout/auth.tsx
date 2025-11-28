@@ -1,10 +1,11 @@
 import { type PropsWithChildren, type ReactNode } from 'react'
 import { Navigate } from 'react-router'
 import { useRequest } from 'ahooks'
-import { RoutePath } from '@/configs'
-import { useAuthStore, useUserClient } from '@/hooks'
 import { isSuccess } from '@demo/api'
-import { Loading } from '../loading'
+import { RoutePath } from '@/configs'
+import { useAuthStore } from '@/stores'
+import { Loading } from '@/components'
+import { useUserClient } from '@/services'
 
 export type AuthProps = PropsWithChildren & {
   fallback?: ReactNode

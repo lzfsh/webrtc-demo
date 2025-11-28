@@ -11,6 +11,8 @@ interface ImportMetaEnv {
   readonly VITE_APP_API_PREFIX?: string
   /** 本地开发服务器 api 接口代理地址 */
   readonly VITE_APP_API_TARGET?: string
+  /** 本地开发服务器 websocket 接口地址 */
+  readonly VITE_APP_WS_ENDPOINT?: string
 }
 
 interface ImportMeta {

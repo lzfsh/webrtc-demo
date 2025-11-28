@@ -1,10 +1,10 @@
 import axios, { CanceledError, type AxiosRequestConfig } from 'axios'
-import { AuthClient, Code, isFailure, UserClient, type HttpClient, LOGIN_URL, REGISTER_URL } from '@demo/api'
-import { useMessage } from './use-feedback'
 import { useMemo } from 'react'
-import { RoutePath } from '@/configs'
-import { useAuthStore } from './use-auth'
 import { useNavigate } from 'react-router'
+import { Code, isFailure, type HttpClient, LOGIN_URL, REGISTER_URL, UserClient, AuthClient } from '@demo/api'
+import { useAuthStore } from '@/stores'
+import { useMessage } from '@/hooks'
+import { RoutePath } from '@/configs'
 
 let client: HttpClient<AxiosRequestConfig>
 

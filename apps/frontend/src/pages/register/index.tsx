@@ -5,8 +5,9 @@ import { Button, Card, Form, Input, Space } from 'antd'
 import { LockOutlined, MailOutlined, UserOutlined } from '@ant-design/icons'
 import { RoutePath } from '@/configs'
 import { removeEmptyValues, trimObjectStrings } from '@/utils'
-import { useAuthClient, useAuthStore } from '@/hooks'
 import { isSuccess, type RegisterRequest } from '@demo/api'
+import { useAuthStore } from '@/stores'
+import { useAuthClient } from '@/services'
 
 interface FormValues {
   username: string

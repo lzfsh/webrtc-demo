@@ -1,11 +1,13 @@
 import { Suspense, type PropsWithChildren } from 'react'
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router'
-import { ErrorBoundary } from 'react-error-boundary'
-import { ConfigProvider, App as AntdApp } from 'antd'
+import { ErrorBoundary, type FallbackProps } from 'react-error-boundary'
+import { ConfigProvider, App as AntdApp, Button, Flex, Typography, Space } from 'antd'
 import { GLOBAL_ANTD_CONF, RoutePath, type RouteConf, OUT_LAYOUT_ROUTE, IN_LAYOUT_ROUTE } from './configs'
-import { Fallback, Loading, RouteAuthGuarder } from './components'
-import { Layout } from './layout'
+import { Loading } from './components'
+import { Layout, RouteAuthGuarder } from './layout'
 import './reset.css'
+
+const { Title, Text } = Typography
 
 function Wrapper({ children }: PropsWithChildren) {
   return (
@@ -39,5 +41,36 @@ export default function App() {
         </Routes>
       </BrowserRouter>
     </Wrapper>
+  )
+}
+
+function Fallback({ error }: FallbackProps) {
+  // 根据换行分割，并去掉空格
+  const stacks: string[] = error?.stack?.toString()?.split(/\s*\n\s*/m) ?? []
+
+  const refresh = () => {
+    window.location.reload()
+  }
+
+  return (
+    <Flex style={{ margin: '0 auto', paddingTop: 80, width: 900 }} vertical align='start' gap={8}>
+      <Title style={{ margin: 0 }} level={2}>
+        Something went wrong!
+      </Title>
+      <Title style={{ margin: 0 }} level={4} type='danger'>
+        {error.message}
+      </Title>
+      <Space direction='vertical' style={{ width: 900 }} align='start' size={0}>
+        {stacks.length > 0 &&
+          stacks.map((stack) => (
+            <Text key={stack} type='danger'>
+              {stack}
+            </Text>
+          ))}
+      </Space>
+      <Button type='primary' onClick={refresh}>
+        Try Again!
+      </Button>
+    </Flex>
   )
 }

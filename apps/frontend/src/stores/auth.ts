@@ -1,7 +1,6 @@
+import { TokenService } from '@/services'
 import type { LoginResponse, User } from '@demo/api'
 import { create } from 'zustand'
-
-const TOKEN_KEY = '__DEMO_TOKEN__'
 
 type UserWithToken = User & { token?: LoginResponse['token'] }
 
@@ -21,11 +20,11 @@ interface Action {
 export type Store = State & Action
 
 export const useAuthStore = create<Store>((set, get) => {
-  const token = localStorage.getItem(TOKEN_KEY) ?? void 0
+  const token = TokenService.getToken()
 
   const getToken = () => get().token
   const setToken = (token: string) => {
-    localStorage.setItem(TOKEN_KEY, token)
+    TokenService.setToken(token)
     set({ token })
   }
 
@@ -36,7 +35,7 @@ export const useAuthStore = create<Store>((set, get) => {
   }
 
   const clear = () => {
-    localStorage.removeItem(TOKEN_KEY)
+    TokenService.removeToken()
     set({ token: void 0, user: void 0 })
   }
 

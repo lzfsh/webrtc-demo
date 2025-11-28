@@ -45,7 +45,7 @@ export interface PopupAction<P extends PopupProps = PopupProps> {
  * @see {@link https://github.com/ant-design/ant-design/blob/master/components/modal/confirm.tsx}
  */
 export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: PopupOptions<P> = {}): PopupAction<P> {
-  const body = globalThis.document.body
+  const body = window.document.body
   const defaultOptions = {
     defaultProps: {},
     container: body,
@@ -77,13 +77,13 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
     unmountContainer(options.container)
   }
 
-  let timer: number | null = null
+  let timer: number = NaN
   function render(props: Partial<P> = {}) {
     return new Promise<void>((resolve) => {
       // 防抖，防止重复渲染
-      if (timer) globalThis.clearTimeout(timer)
+      if (timer) window.clearTimeout(timer)
 
-      timer = globalThis.setTimeout(() => {
+      timer = window.setTimeout(() => {
         // 如果容器是 DocumentFragment 或者元素没有挂载到 body，则挂载到 body
         if (options.container instanceof DocumentFragment || !body.contains(options.container)) {
           body.appendChild(options.container)
@@ -98,7 +98,7 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
          */
         renderNode(node, options.container)
         resolve()
-        timer = null
+        timer = NaN
       })
     })
   }
@@ -114,7 +114,7 @@ export function createPopup<P extends PopupProps>(Comp: ComponentType<P>, opts: 
         if (!unmount) return resolve()
 
         const delay = typeof unmount === 'boolean' ? 0 : unmount.delay
-        globalThis.setTimeout(() => {
+        window.setTimeout(() => {
           unmountContainer(options.container)
           resolve()
         }, delay)

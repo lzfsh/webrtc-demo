@@ -7,7 +7,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd())
 
-  console.log(`loaded env: ${JSON.stringify(env, null, 2)}`)
+  console.log(`mode: ${mode}, loaded env: ${JSON.stringify(env, null, 2)}`)
   /** 具体项配置说明见  src/vite-env.d.ts 或者 README.md#env */
   const conf = {
     apiPrefix: env.VITE_APP_API_PREFIX ?? '/api',
