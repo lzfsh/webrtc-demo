@@ -1,28 +1,17 @@
-import type { Client, Response } from '../types'
-import type {
-  ListUserRequest,
-  ListUserResponse,
-  LoginRequest,
-  LoginResponse,
-  RegisterRequest,
-  RegisterResponse,
-} from './types'
+import type { HttpClient, Response } from '../types'
+import type { GetUserResponse, ListUserRequest, ListUserResponse } from './types'
 
-export function UserClient(client: Client) {
-  const loginURL = '/api/user/login'
-  const login = <C = any>(req: LoginRequest, conf?: C) => {
-    return client.post<LoginRequest, Response<LoginResponse>, C>(loginURL, req, conf)
+export const GET_USER_URL = '/api/user/profile'
+export const LIST_USER_URL = '/api/user/list'
+
+export function UserClient<C extends object>(client: HttpClient<C>) {
+  const getUser = (conf?: C) => {
+    return client.get<Response<GetUserResponse>>(GET_USER_URL, conf)
   }
 
-  const registerURL = '/api/user/register'
-  const register = <C = any>(req: RegisterRequest, conf?: C) => {
-    return client.post<RegisterRequest, Response<RegisterResponse>, C>(registerURL, req, conf)
+  const listUser = (req: ListUserRequest, conf?: C) => {
+    return client.post<ListUserRequest, Response<ListUserResponse>>(LIST_USER_URL, req, conf)
   }
 
-  const listUserURL = '/api/user/list'
-  const listUser = <C = any>(req: ListUserRequest, conf?: C) => {
-    return client.post<ListUserRequest, Response<ListUserResponse>, C>(listUserURL, req, conf)
-  }
-
-  return { loginURL, login, registerURL, register, listUserURL, listUser } as const
+  return { GET_USER_URL, getUser, LIST_USER_URL, listUser } as const
 }

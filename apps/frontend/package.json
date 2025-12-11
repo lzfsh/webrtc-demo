@@ -4,21 +4,33 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/icons": "catalog:react",
+    "@demo/api": "workspace:*",
+    "@demo/ws": "workspace:*",
     "@vitejs/plugin-react": "catalog:bundler",
-    "antd": "catalog:react19",
-    "react": "catalog:react19",
-    "react-dom": "catalog:react19"
+    "ahooks": "catalog:react",
+    "antd": "catalog:react",
+    "axios": "catalog:",
+    "dayjs": "catalog:",
+    "ramda": "catalog:",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "react-error-boundary": "catalog:react",
+    "react-router": "catalog:react",
+    "zustand": "catalog:react"
   },
   "devDependencies": {
     "@types/node": "catalog:linter",
-    "@types/react": "catalog:react19",
-    "@types/react-dom": "catalog:react19",
+    "@types/ramda": "catalog:",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "@vitejs/plugin-basic-ssl": "catalog:bundler",
     "vite": "catalog:bundler"
   }
 }

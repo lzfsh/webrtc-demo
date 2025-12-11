@@ -1,21 +1,37 @@
 {
   "name": "@demo/common",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Shared utilities for demo project.",
+  "keywords": [],
+  "author": "lzfsh",
+  "license": "MIT",
+  "type": "module",
+  "packageManager": "pnpm@10.20.0",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "dev": "tsup --watch",
     "build": "tsup",
     "start": "tsx src/index.ts",
     "typecheck": "tsc --noEmit"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "packageManager": "pnpm@10.20.0",
   "devDependencies": {
-    "tsup": "catalog:bunlder",
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "react": "catalog:react",
+    "react-dom": "catalog:react",
+    "tsup": "catalog:bundler",
     "tsx": "catalog:tools",
     "typescript": "catalog:linter"
+  },
+  "peerDependencies": {
+    "@types/react": "catalog:react",
+    "@types/react-dom": "catalog:react",
+    "react": "catalog:",
+    "react-dom": "catalog:"
   }
 }

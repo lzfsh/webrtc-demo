@@ -20,7 +20,7 @@
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
-    "tsup": "catalog:bunlder",
+    "tsup": "catalog:bundler",
     "tsx": "catalog:tools",
     "typescript": "catalog:linter"
   }

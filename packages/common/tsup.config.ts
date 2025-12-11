@@ -1,8 +1,11 @@
+import path from 'node:path'
 import { defineConfig } from 'tsup'
+
+const entry = ['src/index.ts']
 
 export default defineConfig({
   clean: true,
-  entry: ['src/index.ts'],
+  entry,
   format: 'esm',
   minify: true,
   skipNodeModulesBundle: true,

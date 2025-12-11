@@ -17,27 +17,35 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsup",
-    "start": "tsx src/index.ts start -c config.json",
+    "start": "tsx src/index.ts start -c config.json -p 3000",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@demo/api": "workspace:*",
+    "@demo/ws": "workspace:*",
     "@koa/bodyparser": "catalog:server",
     "@koa/router": "catalog:server",
     "cac": "catalog:cli",
+    "jsonwebtoken": "catalog:",
     "koa": "catalog:server",
+    "koa-jwt": "catalog:server",
+    "koa-logger": "catalog:server",
+    "koa-unless": "catalog:server",
     "mysql2": "catalog:",
     "statuses": "catalog:server",
+    "ws": "catalog:server",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@types/fs-extra": "catalog:",
+    "@types/jsonwebtoken": "catalog:",
     "@types/koa": "catalog:server",
+    "@types/koa-logger": "catalog:server",
     "@types/koa__router": "catalog:server",
     "@types/node": "catalog:linter",
     "@types/statuses": "catalog:server",
+    "@types/ws": "catalog:server",
     "nodemon": "catalog:tools",
-    "tsup": "catalog:bunlder",
+    "tsup": "catalog:bundler",
     "typescript": "catalog:linter"
   }
 }

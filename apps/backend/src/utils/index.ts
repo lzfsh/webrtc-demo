@@ -1,3 +1,2 @@
-export * from './conf'
-export * from './response'
-export * from './other'
+export * from './object'
+export * from './is'

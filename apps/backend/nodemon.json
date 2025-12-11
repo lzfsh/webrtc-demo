@@ -3,5 +3,5 @@
   "watch": ["src", "package.json"],
   "delay": 300,
   "ext": "ts,tsx,json",
-  "exec": "npx tsx src/index.ts start -c config.json"
+  "exec": "npx tsx --inspect src/index.ts start -c config.json -p 3000"
 }

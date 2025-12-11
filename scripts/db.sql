@@ -5,7 +5,7 @@ CREATE TABLE `users` (
     `deleted_at` datetime(3) DEFAULT NULL,
     `username` varchar(50) NOT NULL COMMENT '用户名',
     `email` varchar(100) NOT NULL COMMENT '邮箱',
-    `password` varchar(255) NOT NULL COMMENT '密码',
+    `password` varchar(50) NOT NULL COMMENT '密码',
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
